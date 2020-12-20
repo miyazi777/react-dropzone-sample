@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import {useCallback} from 'react';
+import {useDropzone} from 'react-dropzone';
 
 function App() {
+  const onDropAccepted = useCallback(files => {
+    console.log('accecepted files', files);
+    // TODO ファイルに対してなんらかの処理
+  }, []);
+
+  const onDropRejected = useCallback(files => {
+    console.log('rejected files', files);
+    // TODO エラーファイル処理
+  }, []);
+
+  const {getRootProps, getInputProps} = useDropzone({
+    accept: ['image/*'],
+    onDropAccepted,
+    onDropRejected,
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div {...getRootProps()}>
+        <span>upload file</span>
+        <input {...getInputProps()} />
+      </div>
     </div>
   );
 }
